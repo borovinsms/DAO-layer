@@ -1,0 +1,46 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet id="2" author="poddubniy">
+        <createTable tableName="customers">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="age" type="int">
+                <constraints checkConstraint="check ( age &gt; 18 and age &lt; 150)" nullable="false"/>
+            </column>
+            <column name="phone_number" type="char(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createIndex tableName="customers" indexName="name_index">
+            <column name="name"/>
+        </createIndex>
+
+        <createTable tableName="orders">
+            <column name="id" type="serial">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="int">
+                <constraints nullable="false" foreignKeyName="customer_id" references="customers(id)"/>
+            </column>
+            <column name="product_name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="dec(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
